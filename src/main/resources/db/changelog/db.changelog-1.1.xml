@@ -1,0 +1,41 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="alexander.lozano" id="20190301_create_venue_table">
+        <createTable tableName="venue">
+            <column autoIncrement="true" name="id" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="pk_venue"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="city" type="VARCHAR(255)"/>
+            <column name="state" type="VARCHAR(2)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="alexander.lozano" id="20190301_alter_events_table">
+        <addColumn tableName="events">
+            <column name="venueId" type="SERIAL"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="alexander.lozano" id="20190301_populate_venue_table">
+        <insert tableName="venue">
+            <column name="name" value="Wrigley Field"/>
+            <column name="city" value="Chicago"/>
+            <column name="state" value="IL"/>
+        </insert>
+    </changeSet>
+    <changeSet author="alexander.lozano" id="20190301_update_event">
+        <update tableName="events">
+            <column name="venueId" value="1"/>
+            <where>id=1</where>
+        </update>
+    </changeSet>
+    <changeSet author="alexander.lozano" id="20190301_alter_events_table_add_foreing_key">
+        <addForeignKeyConstraint baseColumnNames="venueId"
+                                 baseTableName="events"
+                                 constraintName="fk_events_venue_id"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedColumnNames="id"
+                                 referencedTableName="venue"/>
+    </changeSet>
+
+</databaseChangeLog>

@@ -10,6 +10,11 @@ buildscript {
 	}
 }
 
+plugins {
+	id 'net.ltgt.apt' version '0.10'
+}
+
+
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
@@ -23,12 +28,15 @@ repositories {
 	mavenCentral()
 }
 
-
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
-	compile('org.springframework.boot:spring-boot-starter-jdbc')
+	compile('org.mapstruct:mapstruct-jdk8:1.2.0.Final')
 	compile('org.liquibase:liquibase-core')
 	compile('com.h2database:h2')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+	compileOnly('org.projectlombok:lombok:1.18.4')
+	compileOnly('org.mapstruct:mapstruct-processor:1.2.0.Final')
+	apt('org.projectlombok:lombok:1.18.4')
+	apt('org.mapstruct:mapstruct-processor:1.2.0.Final')
 }
