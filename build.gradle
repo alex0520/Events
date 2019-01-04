@@ -15,7 +15,6 @@ plugins {
 	id 'net.ltgt.apt' version '0.10'
 }
 
-
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
@@ -31,6 +30,13 @@ node {
 group = 'com.alozano.partnerships'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
+
+bootJar {
+	baseName = 'Events'
+	mainClassName = 'com.alozano.partnerships.interview.InterviewApplication'
+	// Exclude manifest signature files
+	exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA', 'META-INF/LICENSE'
+}
 
 repositories {
 	mavenCentral()
@@ -70,17 +76,14 @@ task appNpmBuild(type: NpmTask, dependsOn: 'appNpmInstall') {
 	args = ['run', 'build']
 }
 
-copy {
-	from file("${project.projectDir}/src/main/webapp/build")
-	into file("${project.projectDir}/src/main/resources/static")
-	include '*.js'
-	include '*.json'
-	include '*.ico'
-	include '*.html'
-	include 'static/**'
+processResources {
+	from (file("${project.projectDir}/src/main/webapp/build/")) {
+		into 'public'
+	}
 }
 
 processResources.dependsOn 'appNpmBuild'
 
 clean.delete << file('node_modules')
 clean.delete << file('src/main/webapp/build')
+clean.delete << file('src/main/resources/static')
