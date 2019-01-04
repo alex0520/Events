@@ -7,6 +7,7 @@ buildscript {
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath 'com.moowork.gradle:gradle-node-plugin:1.2.0'
 	}
 }
 
@@ -19,6 +20,13 @@ apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: "com.moowork.node"
+
+node {
+	version = '8.11.3'
+	npmVersion = '6.5.0'
+	download = true
+}
 
 group = 'com.alozano.partnerships'
 version = '0.0.1-SNAPSHOT'
@@ -29,6 +37,7 @@ repositories {
 }
 
 dependencies {
+	compile('org.springframework.boot:spring-boot-starter')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile('org.mapstruct:mapstruct-jdk8:1.2.0.Final')
@@ -40,3 +49,38 @@ dependencies {
 	apt('org.projectlombok:lombok:1.18.4')
 	apt('org.mapstruct:mapstruct-processor:1.2.0.Final')
 }
+
+nodeSetup.onlyIf {
+	!nodeSetup.nodeDir.exists()
+}
+
+npmSetup.onlyIf {
+	!npmSetup.npmDir.exists()
+}
+
+task appNpmInstall(type: NpmTask) {
+	description = "Installs dependencies from package.json"
+	workingDir = file("${project.projectDir}/src/main/webapp")
+	args = ['install']
+}
+
+task appNpmBuild(type: NpmTask, dependsOn: 'appNpmInstall') {
+	description = "Builds the application"
+	workingDir = file("${project.projectDir}/src/main/webapp")
+	args = ['run', 'build']
+}
+
+copy {
+	from file("${project.projectDir}/src/main/webapp/build")
+	into file("${project.projectDir}/src/main/resources/static")
+	include '*.js'
+	include '*.json'
+	include '*.ico'
+	include '*.html'
+	include 'static/**'
+}
+
+processResources.dependsOn 'appNpmBuild'
+
+clean.delete << file('node_modules')
+clean.delete << file('src/main/webapp/build')

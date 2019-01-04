@@ -41,3 +41,9 @@ gradle-app.setting
 
 # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
 # gradle/wrapper/gradle-wrapper.properties
+
+#React
+out/
+src/main/webapp/build
+src/main/webapp/node*
+src/main/resources/static/
