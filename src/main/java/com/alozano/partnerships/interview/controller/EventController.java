@@ -39,4 +39,12 @@ public class EventController {
         LOGGER.info("Creating {} event", event.getId());
         return event;
     }
+
+    @PostMapping("/venue")
+    public EventDTO createEventsWithVenue(@RequestBody EventDTO eventDTO) {
+        EventDTO event = eventService.createEventWithVenue(eventDTO);
+        LOGGER.info("Creating {} venue", event.getVenue().getId());
+        LOGGER.info("Creating {} event", event.getId());
+        return event;
+    }
 }

@@ -6,7 +6,7 @@
                 <constraints primaryKey="true" primaryKeyName="pk_events"/>
             </column>
             <column name="name" type="VARCHAR(255)"/>
-            <column name="date" type="DATE"/>
+            <column name="date" type="TIMESTAMP"/>
         </createTable>
     </changeSet>
     <changeSet author="alexander.lozano" id="20190301_populate_table">
