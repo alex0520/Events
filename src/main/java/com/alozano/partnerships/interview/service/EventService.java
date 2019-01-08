@@ -18,17 +18,15 @@ public class EventService {
     private final VenueRepository venueRepository;
     private final IEventMapper eventMapper;
 
+    @Autowired
     public EventService(EventRepository eventRepository, VenueRepository venueRepository, IEventMapper eventMapper) {
         this.eventRepository = eventRepository;
         this.venueRepository = venueRepository;
         this.eventMapper = eventMapper;
     }
 
-    @Autowired
-
-
     public List<EventDTO> getEvents() {
-         return this.eventMapper.eventsToEventDTOs(eventRepository.findAll());
+        return this.eventMapper.eventsToEventDTOs(eventRepository.findAll());
     }
 
     public EventDTO createEvent(EventDTO eventDTO) {
