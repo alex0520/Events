@@ -62,7 +62,7 @@ public class EventServiceTest {
     }
 
     @Test
-    public void getEvents() {
+    public void Should_Return_Events_Correctly() {
 
         List<EventDTO> serviceEvents = eventService.getEvents();
         assertNotNull(serviceEvents);
@@ -75,7 +75,7 @@ public class EventServiceTest {
     }
 
     @Test
-    public void createEvent() {
+    public void Should_Create_Event_Correctly() {
         EventDTO eventDTO = new EventDTO();
 
         EventDTO event = eventService.createEvent(eventDTO);
@@ -84,7 +84,7 @@ public class EventServiceTest {
     }
 
     @Test
-    public void createEventWithVenue() {
+    public void Should_Create_Event_With_Venue_Correctly() {
         VenueDTO venueDTO = new VenueDTO();
         EventDTO eventDTO = new EventDTO();
         eventDTO.setVenue(venueDTO);

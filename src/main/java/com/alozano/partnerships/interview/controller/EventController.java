@@ -1,6 +1,5 @@
 package com.alozano.partnerships.interview.controller;
 
-import com.alozano.partnerships.interview.model.Event;
 import com.alozano.partnerships.interview.model.dto.EventDTO;
 import com.alozano.partnerships.interview.service.EventService;
 import org.slf4j.Logger;
