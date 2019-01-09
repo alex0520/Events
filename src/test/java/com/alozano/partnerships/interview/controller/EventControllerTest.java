@@ -75,8 +75,7 @@ public class EventControllerTest {
 
             JavaTimeModule module=new JavaTimeModule();
             mapper.registerModule(module);
-            final String jsonContent = mapper.writeValueAsString(obj);
-            return jsonContent;
+            return mapper.writeValueAsString(obj);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -115,6 +114,22 @@ public class EventControllerTest {
     }
 
     @Test
+    public void Should_Not_Create_Events_With_Not_Valid_Request() throws Exception {
+
+        EventDTO createEventDTO = prepareCreateEventDTO();
+        createEventDTO.setName(null);
+
+        mvc.perform(post("/api/events")
+                .content(asJsonString(createEventDTO))
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors", hasSize(1)))
+                .andExpect(jsonPath("$.errors[0]", is("name: must not be null")));
+
+        verify(eventService, times(0)).createEvent(createEventDTO);
+    }
+
+    @Test
     public void Should_Create_Events_With_Venue_Correctly() throws Exception {
         EventDTO createEventDTO = prepareCreateEventWithVenueDTO();
         EventDTO eventDTO = prepareEventDTO();
@@ -128,5 +143,20 @@ public class EventControllerTest {
                 .andExpect(jsonPath("$.venue.id", is(eventDTO.getVenue().getId())));
 
         verify(eventService, times(1)).createEventWithVenue(createEventDTO);
+    }
+
+    @Test
+    public void Should_Not_Create_Events_With_Venue_With_Not_Valid_Request() throws Exception {
+        EventDTO createEventDTO = prepareCreateEventWithVenueDTO();
+        createEventDTO.setName(null);
+
+        mvc.perform(post("/api/events/venue")
+                .content(asJsonString(createEventDTO))
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors", hasSize(1)))
+                .andExpect(jsonPath("$.errors[0]", is("name: must not be null")));
+
+        verify(eventService, times(0)).createEventWithVenue(createEventDTO);
     }
 }

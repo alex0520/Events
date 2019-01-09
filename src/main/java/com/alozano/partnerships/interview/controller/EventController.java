@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -35,14 +36,14 @@ public class EventController {
     }
 
     @PostMapping
-    public EventDTO createEvents(@RequestBody EventDTO eventDTO) {
+    public EventDTO createEvents(@Valid @RequestBody EventDTO eventDTO) {
         EventDTO event = eventService.createEvent(eventDTO);
         LOGGER.info("Creating {} event", event.getId());
         return event;
     }
 
     @PostMapping("/venue")
-    public EventDTO createEventsWithVenue(@RequestBody EventDTO eventDTO) {
+    public EventDTO createEventsWithVenue(@Valid @RequestBody EventDTO eventDTO) {
         EventDTO event = eventService.createEventWithVenue(eventDTO);
         LOGGER.info("Creating {} venue", event.getVenue().getId());
         LOGGER.info("Creating {} event", event.getId());
