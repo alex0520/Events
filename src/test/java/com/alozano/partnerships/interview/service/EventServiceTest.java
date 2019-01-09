@@ -1,5 +1,6 @@
 package com.alozano.partnerships.interview.service;
 
+import com.alozano.partnerships.interview.mapper.IEventMapperImpl;
 import com.alozano.partnerships.interview.model.Event;
 import com.alozano.partnerships.interview.model.Venue;
 import com.alozano.partnerships.interview.model.dto.EventDTO;
@@ -14,9 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
-import com.alozano.partnerships.interview.mapper.IEventMapperImpl;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
